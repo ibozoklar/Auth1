@@ -1,5 +1,6 @@
 package com.bilgeadam.conroller;
 
+import com.bilgeadam.dto.BaseRequestDto;
 import com.bilgeadam.dto.LoginRequestDto;
 import com.bilgeadam.dto.RegisterRequestDto;
 import com.bilgeadam.repository.entity.Personal;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -27,9 +29,12 @@ public class PersonalController {
         return ResponseEntity.ok(personalService.register(dto));
 
     }
-    @GetMapping("/findall")
-    public ResponseEntity<List<Personal>> findAll(){
-        return ResponseEntity.ok(personalService.findAll());
+
+
+    @PostMapping("/findall")
+    public ResponseEntity<List<Personal>> findByToken(@RequestBody @Valid BaseRequestDto dto){
+
+        return ResponseEntity.ok(personalService.findAll(dto));
     }
 
     @PutMapping("/updateAddress/{id}/{address}")
@@ -38,8 +43,20 @@ public class PersonalController {
         return ResponseEntity.ok(personalService.updateAddress(id, address));
     }
 
+    @PutMapping("/updatePhoto/{id}/{photo}")
+    public ResponseEntity<Boolean> updatePhoto(@PathVariable Long id, @PathVariable String photo){
+
+        return ResponseEntity.ok(personalService.updatePhoto(id, photo));
+    }
+
+    @PutMapping("/updateTelephone/{id}/{telephone}")
+    public ResponseEntity<Boolean> updateTelephone(@PathVariable Long id, @PathVariable String telephone){
+
+        return ResponseEntity.ok(personalService.updateTelephone(id, telephone));
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody @Valid LoginRequestDto dto){
+    public ResponseEntity<String> login(@RequestBody @Valid LoginRequestDto dto){
 
         return ResponseEntity.ok(personalService.login(dto));
 
